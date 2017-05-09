@@ -1,3 +1,4 @@
+# TypeScript React Native Starter
 
 # Prerequisites
 
