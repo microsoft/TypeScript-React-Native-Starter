@@ -27,26 +27,19 @@ You'll probably want to get a cup of coffee in general, and get two if you're us
 Currently the way that React Native operates is that the React Native Packager runs `.js` files through Babel and bundles the output for the device.
 At the moment, there is no easy way to configure the packager to run directly on `.tsx` files, but given TypeScript's emit speed, it's very reasonable to have React Native pick up TypeScript's output.
 
-React Native looks for entry-points like the top-level `index.ios.js` and `index.android.js`.
-We'd like to re-author these in TS, so first we'll move these files into `src/index.ios.js` and `src/index.android.js`.
+React Native looks for an entry-point like the top-level `index.js`. This registers the component defined in App.js
+We'd like to re-author this in TS, so first we'll move this file into `src/App.js`.
 
 ```sh
 mkdir src
-mv index.*.js src
+mv App.js src
 ```
 
-Then we'll create two replacement files to reach into the true entry-points:
+Then we'll change index.js to make it import App.js from the new src folder. The imports in your index.js should now look like this:
 
 ```ts
-// index.ios.js
-
-import './src/index.ios';
-```
-
-```ts
-// index.android.js
-
-import './src/index.android';
+import { AppRegistry } from 'react-native';
+import App from './src/App';
 ```
 
 We'll also move our `__tests__` directory into `src` as well.
@@ -74,20 +67,12 @@ If all is still working, it'd be a good idea to commit our changes in some versi
 ## Introducing TypeScript
 
 It's time to introduce TypeScript to our project.
-First, rewrite the root `index.ios.js` and `index.android.js` files to import from `lib` insead of `src`.
+First, change the `index.js` file to import `App` from `lib` insead of `src`. The imports in your index.js should now look like this:
 
 ```ts
-// index.ios.js
-
-import './lib/index.ios';
+import { AppRegistry } from 'react-native';
+import App from './lib/App';
 ```
-
-```ts
-// index.android.js
-
-import './lib/index.android';
-```
-
 
 ### Adding a configuration file
 
@@ -161,8 +146,8 @@ To read more about [getting `.d.ts` files, you can read up more here about the p
 
 ### Moving files over to TypeScript
 
-Now we'll move our `.js` files to `.tsx` files.
-Let's take `src/index.android.js` or `src/index.ios.js` and rename them both to `src/index.android.tsx` and `src/index.ios.tsx` respectively.
+Now we'll move our `.js` file to a `.tsx` file.
+Let's take `src/App.js` and rename it to `src/App.tsx`.
 
 We'll immediately get a few errors, but they're easy enough to fix.
 The changes will include:
