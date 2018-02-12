@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
-    "test": "jest"
+    "test": "jest",
+    "dev": "concurrently --kill-others \"tsc --watch\" \"npm run start\""
   },
   "dependencies": {
     "react": "16.0.0-alpha.6",
@@ -18,6 +19,7 @@
     "@types/react-test-renderer": "^15.5.0",
     "babel-jest": "19.0.0",
     "babel-preset-react-native": "1.9.1",
+    "concurrently": "^3.5.1",
     "enzyme": "^2.8.2",
     "jest": "19.0.2",
     "react-addons-test-utils": "^15.5.1",
