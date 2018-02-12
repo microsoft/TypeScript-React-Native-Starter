@@ -74,7 +74,7 @@ If all is still working, it'd be a good idea to commit our changes in some versi
 ## Introducing TypeScript
 
 It's time to introduce TypeScript to our project.
-First, rewrite the root `index.ios.js` and `index.android.js` files to import from `lib` insead of `src`.
+First, rewrite the root `index.ios.js` and `index.android.js` files to import from `lib` instead of `src`.
 
 ```ts
 // index.ios.js
