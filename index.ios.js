@@ -1,2 +1,2 @@
 
-import './index.ios';
+import './lib/index.ios';
