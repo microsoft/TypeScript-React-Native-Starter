@@ -1,122 +1,170 @@
-# TypeScript React Native Starter
+﻿﻿﻿﻿# TypeScript React Native Starter
+
+# Tools used for this Readme:
+- tsc 2.7.2
+- node 9.8.0
+- npm 5.7.1
+- yarn 1.5.1
+- see package.json in this repository for the versions of the npm packages used.
+
+As new versions of these tools are released please feel free to submit pull requests to update this README and repository.  Your assistance will be greatly appreciated.
 
 # Prerequisites
 
-Because you might be on one of several different platforms, targeting several different types of devices, basic setup can be involved.
-You should first ensure that you can run a plain React Native app without TypeScript.
-Follow [the instructions on the React Native website to get started](https://facebook.github.io/react-native/docs/getting-started.html).
-When you've managed to deploy to a device or emulator, you'll be ready to start a TypeScript React Native app.
+Because you might be on one of several different platforms, targeting several different types of devices, other setup will be involved.  You should first ensure that you can run a plain React Native app without TypeScript. Follow [the instructions on the React Native website to get started](https://facebook.github.io/react-native/docs/getting-started.html). When you've managed to deploy to a device or emulator following their instructions, you'll be ready to start a TypeScript React Native app.
 
-You will also need Node and npm.
-Where we use npm, we encourage you to try using [Yarn](https://yarnpkg.com/lang/en/) in its place.
+### Notes:
+
+Where we use npm, you can use the equivalent [Yarn](https://yarnpkg.com/lang/en/) command in its place.
+
+`The output of the npm commands will contain numerous warnings that you should be able to safely ignore.`
 
 # Initializing
 
-Once you've tried scaffolding out an ordinary React Native project, you'll be ready to start adding TypeScript.
-Let's go ahead and do that.
+Start by initializing our new project (This could take a few minutes).
 
 ```sh
 react-native init MyAwesomeProject
 ```
 
-Before you do this, it might help to have Yarn or npm 5+ installed.
-You'll probably want to get a cup of coffee in general, and get two if you're using npm 4 and earlier.
+#### Original directory structure
+
+```sh
+C:.
+│   App.js
+│   index.js
+│   package.json
+│   yarn.lock
+|   ...
+│
+├─── ...
+├───android
+├───ios
+└───__tests__
+        App.js
+```
 
 ## Re-organizing the layout
 
-Currently the way that React Native operates is that the React Native Packager runs `.js` files through Babel and bundles the output for the device.
-At the moment, there is no easy way to configure the packager to run directly on `.tsx` files, but given TypeScript's emit speed, it's very reasonable to have React Native pick up TypeScript's output.
+Before converting files to Typescript we are going to move them to new locations and validate the application still executes.  After which we will come back and change them to TypeScript.
 
-React Native looks for entry-points like the top-level `index.ios.js` and `index.android.js`.
-We'd like to re-author these in TS, so first we'll move these files into `src/index.ios.js` and `src/index.android.js`.
+Create a 'src' directory were we will store our typescript files.
 
 ```sh
 mkdir src
-mv index.*.js src
+```
+The React Native Packager runs `.js` files through Babel and bundles the output.  There is no easy way to configure the packager to run directly on `.ts`/`.tsx` files, but given TypeScript's emit speed, it's very reasonable to have React Native pick up TypeScript's output. 
+
+React Native looks for the entry-point `index.js`. Move this file to `src/index.js`.
+
+```
+mv index.js src
 ```
 
-Then we'll create two replacement files to reach into the true entry-points:
+Create a replacement `index.js` where React Native is expecting the entry point, and have it `import` our entry point in `src`.
 
-```ts
-// index.ios.js
+```js
+// index.js
 
-import './src/index.ios';
+import './src/index';
+```
+React Native initialization creates the top component App.js.
+Move this file into `src/App.js`.
+
+```sh
+mv App.js src
 ```
 
-```ts
-// index.android.js
-
-import './src/index.android';
-```
-
-We'll also move our `__tests__` directory into `src` as well.
+Move the `__tests__` directory into `src`.
 
 ```sh
 mv ./__tests__/ ./src/__tests__/
 ```
 
-Ensure that everything is working correctly.
-Try to deploy to a device with one of the two commands:
+#### updated directory structure
+
+```sh
+C:.
+│   index.js
+│   package.json
+│   yarn.lock
+|   ...
+|
+├───android
+├───ios
+├───src
+|   |   App.js
+|   |   index.js
+|   |
+|   └───__tests__
+|           App.js
+```
+
+To ensure that everything is working correctly, try to deploy to a device or emulator with one of the two commands:
 
 ```sh
 react-native run-android
 react-native run-ios
 ```
 
-And ensure your tests are still passing.
+Ensure your tests are still passing.
 
 ```sh
 npm test
 ```
 
-If all is still working, it'd be a good idea to commit our changes in some version control system like git before we introduce TypeScript.
+If all is still working, it would be a good idea to commit the changes to a version control system before we introduce TypeScript.
 
-## Introducing TypeScript
+# Adding TypeScript
 
-It's time to introduce TypeScript to our project.
-First, rewrite the root `index.ios.js` and `index.android.js` files to import from `lib` instead of `src`.
-
-```ts
-// index.ios.js
-
-import './lib/index.ios';
-```
+First, rewrite the root `index.js` files to import from `lib` instead of `src`.  `lib` will contin the compiled `tsc` output.
 
 ```ts
-// index.android.js
+// index.js
 
-import './lib/index.android';
+import './lib/index';
 ```
 
+### Adding the TypeScript configuration file
 
-### Adding a configuration file
-
-Let's create a `tsconfig.json`:
+Create a `tsconfig.json` that outputs to `lib` with the following command:
 
 ```ts
 tsc --init --pretty --sourceMap --target es2015 --outDir ./lib --module commonjs --jsx react
 ```
 
-We'll also need to add `./src/` to the `"include"` section of our `tsconfig.json`:
+Update the following in the`tsconfig.json:
 
 ```json
 {
     "compilerOptions": {
         // other options here
+         "types": ["react","react-native","jest"],
+         "allowSyntheticDefaultImports": true, 
+         "esModuleInterop": true
     },
     "include": ["./src/"]
 }
 ```
+### Add TypeScript npm package
+
+To be able to compile TypeScript we will need to add the `typescript` npm packge
+
+```sh
+npm install --save-dev typescript
+```
 
 ### Adding TypeScript Testing Infrastructure
 
-Since we're using Jest, we'll want to add [ts-jest](https://www.npmjs.com/package/ts-jest) and TypeScript itself to our devDependencies.
+To be able to use TypeScript in our jest tests, we'll want to add [ts-jest](https://www.npmjs.com/package/ts-jest) to our devDependencies.
 
 ```sh
-npm install --save-dev ts-jest typescript
+npm install --save-dev ts-jest
 ```
 
-Then, we'll open up our `package.json` and replace the `jest` field with the following:
+### Update jest configuration to support TypeScript
+
+Open `package.json` and replace the `jest` field with the following:
 
 ```json
 "jest": {
@@ -142,57 +190,56 @@ Then, we'll open up our `package.json` and replace the `jest` field with the fol
 
 This will configure Jest to run `.ts` and `.tsx` files with `ts-jest`.
 
-### Installing 3rd party type declarations
+### Install 3rd party type declarations
 
-To get the best experience in TypeScript, we want the type-checker to understand the shape and API of our dependencies.
-Some libraries will publish their packages with `.d.ts` files (type declaration/type definition files) which can describe the shape of the underlying JavaScript.
-For other libraries, we'll need to explicitly install the appropriate package in the `@types/` npm scope.
-For example, here we'll need types for Jest, React, React Native, and React Test Renderer.
-This turns out to require a pretty simple command.
+To get the best experience in TypeScript, we want to include the type definitions of our dependencies. Some libraries will publish their packages with `.d.ts` type declaration files which describe the types of the underlying JavaScript. For other libraries, we'll need to explicitly install the appropriate package in the `@types/` npm scope. For example, here we'll need types for Jest, React Native, and React Test Renderer.
 
 ```ts
-npm install --save-dev @types/jest @types/react @types/react-native @types/react-test-renderer
+npm install --save-dev @types/jest @types/react-native @types/react-test-renderer
 ```
 
-We saved these declaration file packages to our dev dependencies because we're not publishing this package as a library to npm.
-If we were, we might have to rethink some of them, but for a simple React Native app we don't have to worry about that.
-
-To read more about [getting `.d.ts` files, you can read up more here about the process](https://www.typescriptlang.org/docs/handbook/declaration-files/consumption.html).
+**More about [getting `.d.ts` files](https://www.typescriptlang.org/docs/handbook/declaration-files/consumption.html).**
 
 ### Moving files over to TypeScript
 
-Now we'll move our `.js` files to `.tsx` files.
-Let's take `src/index.android.js` or `src/index.ios.js` and rename them both to `src/index.android.tsx` and `src/index.ios.tsx` respectively.
+Now we'll move our `.js` files to `.ts` and `.tsx` files.
+Rename `src/index.js` to `src/index.ts` and rename `src/App.js` to `src/App.tsx`.
 
-We'll immediately get a few errors, but they're easy enough to fix.
-The changes will include:
+TypeScript has added some improvements to module importing. Yet some [issues](https://github.com/Microsoft/TypeScript/issues/21621) still remain.  
 
-- Replace `import React, {Component} from 'react';` with `import * as React from 'react';`
-- Replace old references to `Component` to `React.Component<object, object>`.
+To address the above issue do the following:
 
-That should fix things right up.
-Some of this has to do with differences in how Babel and TypeScript interoperate with CommonJS modules.
-In the future, the two will stabilize on the same behavior.
+#### Module Fix
+replace 
+
+```ts
+import React, {Component} from 'react';
+```
+
+with 
+
+```ts
+import React from 'react';
+const {Component} = React;
+```
+
+Some of this has to do with differences in how Babel, WebPack, node and TypeScript interoperate with CommonJS modules.  In the future, hopefuilly this will stabilize on the same behavior.
+
 
 Next, we'll move our tests over to TypeScript as well.
-Just change the extension of all files in `src/__tests__/` from `.js` to `.tsx` and apply the following fixes:
+Change the extension of all files in `src/__tests__/` from `.js` to `.tsx.
 
-- Replace `import React, {Component} from 'react';` with `import * as React from 'react';`
-- Replace `import renderer from 'react-test-renderer';` with `import * as renderer from 'react-test-renderer';`
-- Rewrite imports from `import Index from '../index.ios.js';` to `import Index from '../index.ios';`, and likewise for Android.
-  In other words, drop the `.js` extension from your imports.
+Do the [Module Fix](#Module-fix)
 
-First, run TypeScript on our source:
+Run the TypeScript compiler:
 
 ```sh
 ./node_modules/.bin/tsc
 ```
 
-Now we can make sure our tests still run and that the app can still correctly deploy.
-If running on an emulator/device still works, and tests are still passing, you're all set to start building out with TypeScript!
-As a checkpoint, consider committing your files into version control.
+Make sure the tests pass and the app still runs on an emulator/device. If so you're all set to start building out with TypeScript!
 
-### Ignoring more files
+### Update `.gitignore`
 
 For your source control, you'll want to start ignoring the `.jest` and `lib` folders.
 If you're using git, we can just add entries to our `.gitignore` file.
@@ -207,46 +254,65 @@ lib/
 .jest/
 ```
 
-## Adding a component
+As a checkpoint, consider committing your files into version control.
+
+# Create Hello component
 
 We can now add a component to our app.
 Let's go ahead and create a `Hello.tsx` component.
 
 ```ts
 // src/components/Hello.tsx
-import * as React from 'react';
+import React from 'react';
 import { Button, StyleSheet, Text, View } from 'react-native';
 
 export interface Props {
   name: string;
-  enthusiasmLevel?: number;
-  onIncrement?: () => void;
-  onDecrement?: () => void;
 }
 
-function Hello({ name, enthusiasmLevel = 1, onIncrement, onDecrement }: Props) {
-  if (enthusiasmLevel <= 0) {
-    throw new Error('You could be a little more enthusiastic. :D');
-  }
+interface State {
+  date: Date;
+}
 
-  return (
-    <View style={styles.root}>
+export class Hello extends PureComponent<Props, State> {
+  constructor(props)
+  {
+    this.state = {date: new Date()};
+  }
+  private toggleColor(numChars: number) {
+    return Array(numChars + 1).join('!');
+  };  constructor(props)
+  {
+    this.state = {date: new Date()};
+  }
+  private toggleColor(numChars: number) {
+    return Array(numChars + 1).join('!');
+  };
+
+  render() {
+    const { name, enthusiasmLevel = 1, onIncrement, onDecrement } = this.props;
+
+    if (enthusiasmLevel <= 0) {
+      throw new Error('You could be a little more enthusiastic. :D');
+    }
+
+    return (
+      <View style={styles.root}>
         <Text style={styles.greeting}>
-        Hello {name + getExclamationMarks(enthusiasmLevel)}
+          Hello {name + '!'} The time is { new Date().toLocaleTimeString() }
         </Text>
         <View style={styles.buttons}>
-            <View style={styles.button}>
-            <Button title="-" onPress={onDecrement || (() => {})} accessibilityLabel="decrement" color='red' />
-            </View>
-            <View style={styles.button}>
-                <Button title="+" onPress={onIncrement || (() => {})}  accessibilityLabel="increment" color='blue' />
-            </View>
+          <View style={styles.button}>
+            <Button title="-" onPress={toggleColor()} accessibilityLabel="decrement" color='red' />
+          </View>
+          <View style={styles.button}>
+            <Button title="+" onPress={onIncrement || (() => { })} accessibilityLabel="increment" color='blue' />
+          </View>
         </View>
-    </View>
-  );
+      </View>
+    );
+  }
 }
-
-export default Hello;
 
 // styles
 
@@ -272,11 +338,6 @@ const styles = StyleSheet.create({
     }
 });
 
-// helpers
-
-function getExclamationMarks(numChars: number) {
-  return Array(numChars + 1).join('!');
-}
 ```
 
 Woah!
@@ -284,7 +345,7 @@ That's a lot, but let's break it down:
 
 * Instead of rendering HTML elements like `div`, `span`, `h1`, etc., we're rendering components like `View` and `Button`.
   These are native components that work across different platforms.
-* Styling is specified using the `StyleSheet.create` function that React Native gives us.
+* Styling is specified using the `StyleSheet.create` function that React Native gives us. Here we include the styles in the same file for simplicity sake but in practice one may consider a seperate file for the styles to simplify the code review process.
   React's StyleSheets allow us to control our layout using Flexbox, and style using other constructs similar to those in CSS stylesheets.
 
 ## Adding a component test
@@ -292,32 +353,58 @@ That's a lot, but let's break it down:
 Now that we've got a component, let's try testing it out.
 
 We already have Jest installed as a test runner.
-What we'll add in is Enzyme, a test library for React and React Native components.
 
-Let's add in Enzyme.
+Add Enzyme, a test library for React and React Native components, npm package and the adaptor.
 
 ```sh
-npm install --save-dev enzyme @types/enzyme react-addons-test-utils react-dom
+npm install --save-dev enzyme @types/enzyme enzyme-adapter-react-16 react-dom @types/enzyme-adapter-react-16
 ```
+
+#### Note:
+Currently we are using the adaptor for the web site as there isn't an adaptor yet for React native.  The test case here will pass but you will see warnings. See [github issue](https://github.com/airbnb/enzyme/issues/1436) for updates.
 
 Now let's create a `__tests__` folder in `src/components` and add a test for `Hello.tsx`:
 
 ```ts
 // src/components/__tests__/Hello.tsx
 
-import * as React from 'react';
+import React from 'react';
 import { Text } from 'react-native';
-import { shallow } from 'enzyme';
+import { configure, shallow } from 'enzyme';
+import Adapter from 'enzyme-adapter-react-16';
 
-import Hello from '../Hello';
+import { Hello } from '../Hello';
+
+configure({ adapter: new Adapter() });
 
 it('renders correctly with defaults', () => {
     const hello = shallow(<Hello name="World" />);
-    expect(hello.find(Text).render().text()).toEqual("Hello World!");
+    expect(hello.find(Text).first().render().text()).toEqual("Hello World!");
 })
 ```
 
+excute the tests and confirm they pass before adding the component to your App.
+
+## Add Hello component to the App.
+
+Replace the default render code in App.tsx with the following to use the new `Hello` component.
+
+```ts
+
+export default class App extends Component<Props> {
+  render() {
+    return (
+      <Hello name="World"/>
+    );
+  }
+}
+
+```
+execute the app and confirm all is working.  If so, check-in your changes.
+
 # Next Steps
+
+[Debugging the application] (https://marketplace.visualstudio.com/items?itemName=vsmobile.vscode-react-native)
 
 Check out [our React tutorial](https://github.com/DanielRosenwasser/React-TypeScript-Tutorial) where we also cover topics like state management with [Redux](http://redux.js.org).
 These same subjects can be applied when writing React Native apps.
