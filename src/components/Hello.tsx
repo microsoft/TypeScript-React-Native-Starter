@@ -1,10 +1,5 @@
 import React from 'react';
-import {
-  Button,
-  StyleSheet,
-  Text,
-  View
-} from 'react-native';
+import { Button, StyleSheet, Text, View } from 'react-native';
 
 interface Props {
   name: string;
@@ -14,13 +9,12 @@ interface State {
   date: Date;
 }
 
-export class Hello extends React.Component<Props, State> {
+export class Hello extends React.PureComponent<Props, State> {
   constructor(props: Props) {
     super(props);
-    this.state = {date: new Date()};
+    this.state = { date: new Date() };
   }
   private updateDate = () => {
-    debugger;
     this.setState({
       date: new Date()
     })
@@ -51,22 +45,22 @@ export class Hello extends React.Component<Props, State> {
 
 const styles = StyleSheet.create({
   root: {
-      alignItems: "center",
-      alignSelf: "center"
+    alignItems: "center",
+    alignSelf: "center"
   },
   buttons: {
-      flexDirection: "row",
-      minHeight: 70,
-      alignItems: "stretch",
-      alignSelf: "center",
-      borderWidth: 5,
+    flexDirection: "row",
+    minHeight: 70,
+    alignItems: "stretch",
+    alignSelf: "center",
+    borderWidth: 5,
   },
   button: {
-      flex: 1,
-      paddingVertical: 0,
+    flex: 1,
+    paddingVertical: 0,
   },
   greeting: {
-      color: "#999",
-      fontWeight: "bold"
+    color: "#999",
+    fontWeight: "bold"
   }
 });
