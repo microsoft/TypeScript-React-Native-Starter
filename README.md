@@ -1,4 +1,4 @@
-﻿﻿﻿﻿# TypeScript React Native Starter
+﻿﻿# TypeScript React Native Starter
 
 # Tools used for this Readme:
 - tsc 2.7.2
@@ -13,24 +13,23 @@ As new versions of these tools are released please feel free to submit pull requ
 
 Because you might be on one of several different platforms, targeting several different types of devices, other setup will be involved.  You should first ensure that you can run a plain React Native app without TypeScript. Follow [the instructions on the React Native website to get started](https://facebook.github.io/react-native/docs/getting-started.html). When you've managed to deploy to a device or emulator following their instructions, you'll be ready to start a TypeScript React Native app.
 
-### Notes:
+### Notes
 
-Where we use npm, you can use the equivalent [Yarn](https://yarnpkg.com/lang/en/) command in its place.
-
-`The output of the npm commands will contain numerous warnings that you should be able to safely ignore.`
+Where we use npm, you can use the equivalent [Yarn](https://yarnpkg.com/lang/en/) command in its place. The output of the npm commands may contain numerous warnings that you should be able to safely ignore.
 
 # Initializing
 
-Start by initializing our new project (This could take a few minutes).
+Let's start by initializing our new project with the `react-native` command. 
+Note that this may take a few minutes.
 
-```sh
+```
 react-native init MyAwesomeProject
 ```
 
 #### Original directory structure
 
-```sh
-C:.
+```
+MyAwesomeProject.
 │   App.js
 │   index.js
 │   package.json
@@ -39,7 +38,9 @@ C:.
 │
 ├─── ...
 ├───android
+|
 ├───ios
+|
 └───__tests__
         App.js
 ```
@@ -83,15 +84,17 @@ mv ./__tests__/ ./src/__tests__/
 
 #### updated directory structure
 
-```sh
-C:.
+```
+MyAwesomeProject.
 │   index.js
 │   package.json
 │   yarn.lock
 |   ...
 |
 ├───android
+|
 ├───ios
+|
 ├───src
 |   |   App.js
 |   |   index.js
@@ -117,7 +120,7 @@ If all is still working, it would be a good idea to commit the changes to a vers
 
 # Adding TypeScript
 
-First, rewrite the root `index.js` files to import from `lib` instead of `src`.  `lib` will contin the compiled `tsc` output.
+First, rewrite the root `index.js` files to import from `lib` instead of `src`. As `lib` will contin the compiled `tsc` output.
 
 ```ts
 // index.js
@@ -133,7 +136,7 @@ Create a `tsconfig.json` that outputs to `lib` with the following command:
 tsc --init --pretty --sourceMap --target es2015 --outDir ./lib --module commonjs --jsx react
 ```
 
-Update the following in the`tsconfig.json:
+Update the following in the `tsconfig.json`:
 
 ```json
 {
@@ -229,7 +232,7 @@ Some of this has to do with differences in how Babel, WebPack, node and TypeScri
 Next, we'll move our tests over to TypeScript as well.
 Change the extension of all files in `src/__tests__/` from `.js` to `.tsx.
 
-Do the [Module Fix](#Module-fix)
+Do the [Module Fix](#Module-fix) for these files also.
 
 Run the TypeScript compiler:
 
@@ -266,7 +269,7 @@ Let's go ahead and create a `Hello.tsx` component.
 import React from 'react';
 import { Button, StyleSheet, Text, View } from 'react-native';
 
-export interface Props {
+interface Props {
   name: string;
 }
 
@@ -274,39 +277,31 @@ interface State {
   date: Date;
 }
 
-export class Hello extends PureComponent<Props, State> {
-  constructor(props)
-  {
-    this.state = {date: new Date()};
+export class Hello extends React.PureComponent<Props, State> {
+  constructor(props: Props) {
+    super(props);
+    this.state = { date: new Date() };
   }
-  private toggleColor(numChars: number) {
-    return Array(numChars + 1).join('!');
-  };  constructor(props)
-  {
-    this.state = {date: new Date()};
-  }
-  private toggleColor(numChars: number) {
-    return Array(numChars + 1).join('!');
+  private updateDate = () => {
+    this.setState({
+      date: new Date()
+    })
   };
 
   render() {
-    const { name, enthusiasmLevel = 1, onIncrement, onDecrement } = this.props;
-
-    if (enthusiasmLevel <= 0) {
-      throw new Error('You could be a little more enthusiastic. :D');
-    }
+    const { name, } = this.props;
 
     return (
       <View style={styles.root}>
         <Text style={styles.greeting}>
-          Hello {name + '!'} The time is { new Date().toLocaleTimeString() }
+          Hello {name + '!'}
+        </Text>
+        <Text style={styles.greeting}>
+          Current Time: {this.state.date.toLocaleString()}
         </Text>
         <View style={styles.buttons}>
           <View style={styles.button}>
-            <Button title="-" onPress={toggleColor()} accessibilityLabel="decrement" color='red' />
-          </View>
-          <View style={styles.button}>
-            <Button title="+" onPress={onIncrement || (() => { })} accessibilityLabel="increment" color='blue' />
+            <Button title="Update Time" onPress={this.updateDate} accessibilityLabel="decrement" color='red' />
           </View>
         </View>
       </View>
@@ -317,30 +312,28 @@ export class Hello extends PureComponent<Props, State> {
 // styles
 
 const styles = StyleSheet.create({
-    root: {
-        alignItems: "center",
-        alignSelf: "center"
-    },
-    buttons: {
-        flexDirection: "row",
-        minHeight: 70,
-        alignItems: "stretch",
-        alignSelf: "center",
-        borderWidth: 5,
-    },
-    button: {
-        flex: 1,
-        paddingVertical: 0,
-    },
-    greeting: {
-        color: "#999",
-        fontWeight: "bold"
-    }
+  root: {
+    alignItems: "center",
+    alignSelf: "center"
+  },
+  buttons: {
+    flexDirection: "row",
+    minHeight: 70,
+    alignItems: "stretch",
+    alignSelf: "center",
+    borderWidth: 5,
+  },
+  button: {
+    flex: 1,
+    paddingVertical: 0,
+  },
+  greeting: {
+    color: "#999",
+    fontWeight: "bold"
+  }
 });
-
 ```
 
-Woah!
 That's a lot, but let's break it down:
 
 * Instead of rendering HTML elements like `div`, `span`, `h1`, etc., we're rendering components like `View` and `Button`.
@@ -360,8 +353,8 @@ Add Enzyme, a test library for React and React Native components, npm package an
 npm install --save-dev enzyme @types/enzyme enzyme-adapter-react-16 react-dom @types/enzyme-adapter-react-16
 ```
 
-#### Note:
-Currently we are using the adaptor for the web site as there isn't an adaptor yet for React native.  The test case here will pass but you will see warnings. See [github issue](https://github.com/airbnb/enzyme/issues/1436) for updates.
+#### Note
+Currently we are using the adaptor for the web site as there isn't an adaptor yet for React Native.  The test case here will pass but you may see warnings. See [github issue](https://github.com/airbnb/enzyme/issues/1436) for updates.
 
 Now let's create a `__tests__` folder in `src/components` and add a test for `Hello.tsx`:
 
