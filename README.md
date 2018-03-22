@@ -82,7 +82,7 @@ Move the `__tests__` directory into `src`.
 mv ./__tests__/ ./src/__tests__/
 ```
 
-#### updated directory structure
+#### Updated directory structure
 
 ```
 MyAwesomeProject.
