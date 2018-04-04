@@ -111,8 +111,7 @@ Then, we'll open up our `package.json` and replace the `jest` field with the fol
   "testRegex": "(/__tests__/.*|\\.(test|spec))\\.(ts|tsx|js)$",
   "testPathIgnorePatterns": [
     "\\.snap$",
-    "<rootDir>/node_modules/",
-    "<rootDir>/lib/"
+    "<rootDir>/node_modules/"
   ],
   "cacheDirectory": ".jest/cache"
 }
@@ -124,7 +123,7 @@ This will configure Jest to run `.ts` and `.tsx` files with `ts-jest`.
 
 To get the best experience in TypeScript, we want the type-checker to understand the shape and API of our dependencies. Some libraries will publish their packages with `.d.ts` files (type declaration/type definition files), which can describe the shape of the underlying JavaScript. For other libraries, we'll need to explicitly install the appropriate package in the `@types/` npm scope.
 
-For example, here we'll need types for Jest, React, and React Native, and React Test Renderer. This turns out to require a pretty simple command.
+For example, here we'll need types for Jest, React, and React Native, and React Test Renderer.
 
 ```ts
 yarn add --dev @types/jest @types/react @types/react-native @types/react-test-renderer
@@ -136,13 +135,9 @@ You can read more [here about getting `.d.ts` files](https://www.typescriptlang.
 
 ## Ignoring More Files
 
-For your source control, you'll want to start ignoring the `.jest` and `lib` folders. If you're using git, we can just add entries to our `.gitignore` file.
+For your source control, you'll want to start ignoring the `.jest` folder. If you're using git, we can just add entries to our `.gitignore` file.
 
 ```config
-# TypeScript
-#
-lib/
-
 # Jest
 #
 .jest/
