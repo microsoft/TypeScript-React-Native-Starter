@@ -2,13 +2,17 @@
 
 ## Prerequisites
 
-Because you might be developing on one of several different platforms, targeting several different types of devices, basic setup can be involved. You should first ensure that you can run a plain React Native app without TypeScript. Follow [the instructions on the React Native website to get started](https://facebook.github.io/react-native/docs/getting-started.html). When you've managed to deploy to a device or emulator, you'll be ready to start a TypeScript React Native app.
+Because you might be developing on one of several different platforms, targeting several different types of devices, basic setup can be involved.
+You should first ensure that you can run a plain React Native app without TypeScript.
+Follow [the instructions on the React Native website to get started](https://facebook.github.io/react-native/docs/getting-started.html).
+When you've managed to deploy to a device or emulator, you'll be ready to start a TypeScript React Native app.
 
 You will also need [Node.js](https://nodejs.org/en/), [NPM](https://www.npmjs.com), and [Yarn](https://yarnpkg.com/lang/en).
 
 ## Initializing
 
-Once you've tried scaffolding out an ordinary React Native project, you'll be ready to start adding TypeScript. Let's go ahead and do that.
+Once you've tried scaffolding out an ordinary React Native project, you'll be ready to start adding TypeScript.
+Let's go ahead and do that.
 
 ```sh
 react-native init MyAwesomeProject
@@ -17,7 +21,8 @@ cd MyAwesomeProject
 
 ## Adding TypeScript
 
-The next step is to add TypeScript to your project. The following commands will:
+The next step is to add TypeScript to your project.
+The following commands will:
 
 * add TypeScript to your project
 * add [React Native TypeScript Transformer](https://github.com/ds300/react-native-typescript-transformer) to your project
@@ -35,7 +40,8 @@ touch rn-cli.config.js
 yarn add --dev @types/react @types/react-native
 ```
 
-The `tsconfig.json` file contains all the settings for the TypeScript compile. The defaults created by the command above are mostly fine, but open the file and uncomment the following line:
+The `tsconfig.json` file contains all the settings for the TypeScript compile.
+The defaults created by the command above are mostly fine, but open the file and uncomment the following line:
 
 ```js
 {
@@ -57,7 +63,8 @@ You'll also want to add this to the **top-level** of the config, to tell TypeScr
 }
 ```
 
-The `rn-cli.config.js` contains the settings for the React Native TypeScript Transformer. Open it and add the following:
+The `rn-cli.config.js` contains the settings for the React Native TypeScript Transformer.
+Open it and add the following:
 
 ```js
 module.exports = {
@@ -72,9 +79,12 @@ module.exports = {
 
 ## Migrating to TypeScript
 
-Rename the generated `App.js` and `__tests_/App.js` files to `App.tsx`. `index.js` needs to use the `.js` extension. All new files should use the `.tsx` extension (or `.ts` if the file doesn't contain any JSX).
+Rename the generated `App.js` and `__tests_/App.js` files to `App.tsx`. `index.js` needs to use the `.js` extension.
+All new files should use the `.tsx` extension (or `.ts` if the file doesn't contain any JSX).
 
-If you tried to run the app now, you'd get an error like `object prototype may only be an object or null`. This is caused by a failure to import the default export from React as well as a named export on the same line. Open `App.tsx` and modify the import at the top of the file:
+If you tried to run the app now, you'd get an error like `object prototype may only be an object or null`.
+This is caused by a failure to import the default export from React as well as a named export on the same line.
+Open `App.tsx` and modify the import at the top of the file:
 
 ```diff
 -import React, { Component } from 'react';
@@ -82,7 +92,8 @@ If you tried to run the app now, you'd get an error like `object prototype may o
 +import { Component } from 'react';
 ```
 
-Some of this has to do with differences in how Babel and TypeScript interoperate with CommonJS modules. In the future, the two will stabilize on the same behavior.
+Some of this has to do with differences in how Babel and TypeScript interoperate with CommonJS modules.
+In the future, the two will stabilize on the same behavior.
 
 At this point, you should be able to run the React Native app.
 
@@ -121,7 +132,9 @@ This will configure Jest to run `.ts` and `.tsx` files with `ts-jest`.
 
 ## Installing Dependency Type Declarations
 
-To get the best experience in TypeScript, we want the type-checker to understand the shape and API of our dependencies. Some libraries will publish their packages with `.d.ts` files (type declaration/type definition files), which can describe the shape of the underlying JavaScript. For other libraries, we'll need to explicitly install the appropriate package in the `@types/` npm scope.
+To get the best experience in TypeScript, we want the type-checker to understand the shape and API of our dependencies.
+Some libraries will publish their packages with `.d.ts` files (type declaration/type definition files), which can describe the shape of the underlying JavaScript.
+For other libraries, we'll need to explicitly install the appropriate package in the `@types/` npm scope.
 
 For example, here we'll need types for Jest, React, and React Native, and React Test Renderer.
 
@@ -129,13 +142,15 @@ For example, here we'll need types for Jest, React, and React Native, and React 
 yarn add --dev @types/jest @types/react @types/react-native @types/react-test-renderer
 ```
 
-We saved these declaration file packages to our _dev_ dependencies because we're not publishing this package as a library to npm. If we were, we might have to add some of them as regular dependencies.
+We saved these declaration file packages to our _dev_ dependencies because we're not publishing this package as a library to npm.
+If we were, we might have to add some of them as regular dependencies.
 
 You can read more [here about getting `.d.ts` files](https://www.typescriptlang.org/docs/handbook/declaration-files/consumption.html).
 
 ## Ignoring More Files
 
-For your source control, you'll want to start ignoring the `.jest` folder. If you're using git, we can just add entries to our `.gitignore` file.
+For your source control, you'll want to start ignoring the `.jest` folder.
+If you're using git, we can just add entries to our `.gitignore` file.
 
 ```config
 # Jest
@@ -154,7 +169,9 @@ git commit -am "Initial commit."
 
 ## Adding a Component
 
-We can now add a component to our app. Let's go ahead and create a `Hello.tsx` component. Create a `components` directory and add the following example.
+We can now add a component to our app.
+Let's go ahead and create a `Hello.tsx` component.
+Create a `components` directory and add the following example.
 
 ```ts
 // components/Hello.tsx
@@ -251,14 +268,17 @@ const styles = StyleSheet.create({
 
 Whoa! That's a lot, but let's break it down:
 
-* Instead of rendering HTML elements like `div`, `span`, `h1`, etc., we're rendering components like `View` and `Button`. These are native components that work across different platforms.
-* Styling is specified using the `StyleSheet.create` function that React Native gives us. React's StyleSheets allow us to control our layout using Flexbox, and style using other constructs similar to those in CSS stylesheets.
+* Instead of rendering HTML elements like `div`, `span`, `h1`, etc., we're rendering components like `View` and `Button`.
+  These are native components that work across different platforms.
+* Styling is specified using the `StyleSheet.create` function that React Native gives us.
+  React's StyleSheets allow us to control our layout using Flexbox, and style using other constructs similar to those in CSS stylesheets.
 
 ## Adding a Component Test
 
 Now that we've got a component, let's try testing it.
 
-We already have Jest installed as a test runner. We're going to write snapshot tests for our components, let's add the required add-on for snapshot tests:
+We already have Jest installed as a test runner.
+We're going to write snapshot tests for our components, let's add the required add-on for snapshot tests:
 
 ```sh
 yarn add --dev react-addons-test-utils
@@ -279,11 +299,14 @@ it("renders correctly with defaults", () => {
 })
 ```
 
-The first time the test is ran, it will create a snapshot of the DOM and store it in the `components/__tests__/__snapshots__/Hello.tsx.snap` file. When you modify your component, you'll need to update the snapshots and review the update for inadvertent changes. You can read more about testing React Native components [here](https://facebook.github.io/jest/docs/en/tutorial-react-native.html).
+The first time the test is ran, it will create a snapshot of the DOM and store it in the `components/__tests__/__snapshots__/Hello.tsx.snap` file.
+When you modify your component, you'll need to update the snapshots and review the update for inadvertent changes.
+You can read more about testing React Native components [here](https://facebook.github.io/jest/docs/en/tutorial-react-native.html).
 
 ## Next Steps
 
-Check out [our React tutorial](https://github.com/DanielRosenwasser/React-TypeScript-Tutorial) where we also cover topics like state management with [Redux](http://redux.js.org). These same subjects can be applied when writing React Native apps.
+Check out [our React tutorial](https://github.com/DanielRosenwasser/React-TypeScript-Tutorial) where we also cover topics like state management with [Redux](http://redux.js.org).
+These same subjects can be applied when writing React Native apps.
 
 Additionally, you may want to look at the [ReactXP](https://microsoft.github.io/reactxp/) if you're looking for a component library written entirely in TypeScript that supports both React on the web as well as React Native.
 
