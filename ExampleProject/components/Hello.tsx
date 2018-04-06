@@ -4,14 +4,10 @@ import { Button, StyleSheet, Text, View } from "react-native"
 export interface Props {
   name: string
   enthusiasmLevel?: number
-  onIncrement?: () => void
-  onDecrement?: () => void
 }
 
 interface State {
   enthusiasmLevel: number
-  onIncrement: () => void
-  onDecrement: () => void
 }
 
 export class Hello extends React.Component<Props, State> {
@@ -23,11 +19,12 @@ export class Hello extends React.Component<Props, State> {
     }
 
     this.state = {
-      enthusiasmLevel: props.enthusiasmLevel || 1,
-      onIncrement: props.onIncrement || (() => {}),
-      onDecrement: props.onDecrement || (() => {})
+      enthusiasmLevel: props.enthusiasmLevel || 1
     }
   }
+
+  onIncrement = () => this.setState({ enthusiasmLevel: this.state.enthusiasmLevel + 1 });
+  onDecrement = () => this.setState({ enthusiasmLevel: this.state.enthusiasmLevel - 1 });
 
   getExclamationMarks(numChars: number) {
     return Array(numChars + 1).join("!")
@@ -44,7 +41,7 @@ export class Hello extends React.Component<Props, State> {
           <View style={styles.button}>
             <Button
               title="-"
-              onPress={this.state.onDecrement}
+              onPress={this.onDecrement}
               accessibilityLabel="decrement"
               color="red"
             />
@@ -53,7 +50,7 @@ export class Hello extends React.Component<Props, State> {
           <View style={styles.button}>
             <Button
               title="+"
-              onPress={this.state.onIncrement}
+              onPress={this.onIncrement}
               accessibilityLabel="increment"
               color="blue"
             />

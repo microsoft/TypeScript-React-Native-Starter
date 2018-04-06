@@ -79,10 +79,10 @@ module.exports = {
 
 ## Migrating to TypeScript
 
-Rename the generated `App.js` and `__tests_/App.js` files to `App.tsx`. `index.js` needs to use the `.js` extension.
+Rename the generated `App.js` and `__tests__/App.js` files to `App.tsx`. `index.js` needs to use the `.js` extension.
 All new files should use the `.tsx` extension (or `.ts` if the file doesn't contain any JSX).
 
-If you tried to run the app now, you'd get an error like `object prototype may only be an object or null`.
+If you try to run the app now, you'll get an error like `object prototype may only be an object or null`.
 This is caused by a failure to import the default export from React as well as a named export on the same line.
 Open `App.tsx` and modify the import at the top of the file:
 
@@ -130,10 +130,10 @@ Then, we'll open up our `package.json` and replace the `jest` field with the fol
 
 This will configure Jest to run `.ts` and `.tsx` files with `ts-jest`.
 
-## Installing Dependency Type Declarations
+## Installing Type Declaration Dependencies
 
 To get the best experience in TypeScript, we want the type-checker to understand the shape and API of our dependencies.
-Some libraries will publish their packages with `.d.ts` files (type declaration/type definition files), which can describe the shape of the underlying JavaScript.
+Some libraries will publish their packages with `.d.ts` files (also called "typed declaration" or "type definition" files) which can describe the shape of the underlying JavaScript.
 For other libraries, we'll need to explicitly install the appropriate package in the `@types/` npm scope.
 
 For example, here we'll need types for Jest, React, and React Native, and React Test Renderer.
@@ -187,8 +187,6 @@ export interface Props {
 
 interface State {
   enthusiasmLevel: number
-  onIncrement: () => void
-  onDecrement: () => void
 }
 
 export class Hello extends React.Component<Props, State> {
@@ -200,11 +198,12 @@ export class Hello extends React.Component<Props, State> {
     }
 
     this.state = {
-      enthusiasmLevel: props.enthusiasmLevel || 1,
-      onIncrement: props.onIncrement || (() => {}),
-      onDecrement: props.onDecrement || (() => {})
+      enthusiasmLevel: props.enthusiasmLevel || 1
     }
   }
+
+  onIncrement = () => this.setState({ enthusiasmLevel: this.state.enthusiasmLevel + 1 });
+  onDecrement = () => this.setState({ enthusiasmLevel: this.state.enthusiasmLevel - 1 });
 
   getExclamationMarks(numChars: number) {
     return Array(numChars + 1).join("!")
@@ -221,7 +220,7 @@ export class Hello extends React.Component<Props, State> {
           <View style={styles.button}>
             <Button
               title="-"
-              onPress={this.state.onDecrement}
+              onPress={this.onDecrement}
               accessibilityLabel="decrement"
               color="red"
             />
@@ -230,7 +229,7 @@ export class Hello extends React.Component<Props, State> {
           <View style={styles.button}>
             <Button
               title="+"
-              onPress={this.state.onIncrement}
+              onPress={this.onIncrement}
               accessibilityLabel="increment"
               color="blue"
             />
@@ -299,13 +298,13 @@ it("renders correctly with defaults", () => {
 })
 ```
 
-The first time the test is ran, it will create a snapshot of the DOM and store it in the `components/__tests__/__snapshots__/Hello.tsx.snap` file.
+The first time the test is run, it will create a snapshot of the rendered component and store it in the `components/__tests__/__snapshots__/Hello.tsx.snap` file.
 When you modify your component, you'll need to update the snapshots and review the update for inadvertent changes.
 You can read more about testing React Native components [here](https://facebook.github.io/jest/docs/en/tutorial-react-native.html).
 
 ## Next Steps
 
-Check out [our React tutorial](https://github.com/DanielRosenwasser/React-TypeScript-Tutorial) where we also cover topics like state management with [Redux](http://redux.js.org).
+Check out [our React TypeScript tutorial](https://github.com/Microsoft/TypeScript-React-Starter) where we also cover topics like state management with [Redux](http://redux.js.org).
 These same subjects can be applied when writing React Native apps.
 
 Additionally, you may want to look at the [ReactXP](https://microsoft.github.io/reactxp/) if you're looking for a component library written entirely in TypeScript that supports both React on the web as well as React Native.
