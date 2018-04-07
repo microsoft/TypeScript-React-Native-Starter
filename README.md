@@ -175,7 +175,7 @@ Create a `components` directory and add the following example.
 
 ```ts
 // components/Hello.tsx
-import * as React from "react"
+import React from "react"
 import { Button, StyleSheet, Text, View } from "react-native"
 
 export interface Props {
@@ -284,8 +284,8 @@ Now let's create a `__tests__` folder in the `components` directory and add a te
 
 ```ts
 // components/__tests__/Hello.tsx
-import * as React from "react"
-import * as renderer from "react-test-renderer"
+import React from 'react'
+import renderer from 'react-test-renderer'
 
 import { Hello } from "../Hello"
 
