@@ -51,18 +51,6 @@ The defaults created by the command above are mostly fine, but open the file and
 }
 ```
 
-You'll also want to add this to the **top-level** of the config, to tell TypeScript not to try compiling your `node_modules` directory:
-
-```js
-{
-  ...
-  "exclude": [
-    "node_modules"
-  ]
-  ...
-}
-```
-
 The `rn-cli.config.js` contains the settings for the React Native TypeScript Transformer.
 Open it and add the following:
 
