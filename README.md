@@ -35,7 +35,7 @@ Okay let's go ahead and run these.
 ```sh
 yarn add --dev typescript
 yarn add --dev react-native-typescript-transformer
-yarn tsc --init --pretty --jsx react
+yarn tsc --init --pretty --jsx react-native
 touch rn-cli.config.js
 yarn add --dev @types/react @types/react-native
 ```
