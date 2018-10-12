@@ -24,11 +24,11 @@ cd MyAwesomeProject
 The next step is to add TypeScript to your project.
 The following commands will:
 
-* add TypeScript to your project
-* add [React Native TypeScript Transformer](https://github.com/ds300/react-native-typescript-transformer) to your project
-* initialize an empty TypeScript config file, which we'll configure next
-* add an empty React Native TypeScript Transformer config file, which we'll configure next
-* Adds [typings](https://github.com/DefinitelyTyped/DefinitelyTyped) for React and React Native
+- add TypeScript to your project
+- add [React Native TypeScript Transformer](https://github.com/ds300/react-native-typescript-transformer) to your project
+- initialize an empty TypeScript config file, which we'll configure next
+- add an empty React Native TypeScript Transformer config file, which we'll configure next
+- Adds [typings](https://github.com/DefinitelyTyped/DefinitelyTyped) for React and React Native
 
 Okay let's go ahead and run these.
 
@@ -56,11 +56,8 @@ Open it and add the following:
 
 ```js
 module.exports = {
-  getTransformModulePath() {
-    return require.resolve("react-native-typescript-transformer");
-  },
-  getSourceExts() {
-    return ["ts", "tsx"];
+  transformer: {
+    babelTransformerPath: require.resolve("react-native-typescript-transformer")
   }
 };
 ```
@@ -163,42 +160,46 @@ Create a `components` directory and add the following example.
 
 ```ts
 // components/Hello.tsx
-import React from "react"
-import { Button, StyleSheet, Text, View } from "react-native"
+import React from "react";
+import { Button, StyleSheet, Text, View } from "react-native";
 
 export interface Props {
-  name: string
-  enthusiasmLevel?: number
-  onIncrement?: () => void
-  onDecrement?: () => void
+  name: string;
+  enthusiasmLevel?: number;
+  onIncrement?: () => void;
+  onDecrement?: () => void;
 }
 
 interface State {
-  enthusiasmLevel: number
+  enthusiasmLevel: number;
 }
 
 export class Hello extends React.Component<Props, State> {
   constructor(props: Props) {
-    super(props)
+    super(props);
 
     if ((props.enthusiasmLevel || 0) <= 0) {
-      throw new Error("You could be a little more enthusiastic. :D")
+      throw new Error("You could be a little more enthusiastic. :D");
     }
 
     this.state = {
       enthusiasmLevel: props.enthusiasmLevel || 1
-    }
+    };
   }
 
-  onIncrement = () => this.setState({ enthusiasmLevel: this.state.enthusiasmLevel + 1 });
-  onDecrement = () => this.setState({ enthusiasmLevel: this.state.enthusiasmLevel - 1 });
-  getExclamationMarks = (numChars: number) => Array(numChars + 1).join("!")
+  onIncrement = () =>
+    this.setState({ enthusiasmLevel: this.state.enthusiasmLevel + 1 });
+  onDecrement = () =>
+    this.setState({ enthusiasmLevel: this.state.enthusiasmLevel - 1 });
+  getExclamationMarks = (numChars: number) => Array(numChars + 1).join("!");
 
   render() {
     return (
       <View style={styles.root}>
         <Text style={styles.greeting}>
-          Hello {this.props.name + this.getExclamationMarks(this.state.enthusiasmLevel)}
+          Hello{" "}
+          {this.props.name +
+            this.getExclamationMarks(this.state.enthusiasmLevel)}
         </Text>
 
         <View style={styles.buttons}>
@@ -221,7 +222,7 @@ export class Hello extends React.Component<Props, State> {
           </View>
         </View>
       </View>
-    )
+    );
   }
 }
 
@@ -247,14 +248,14 @@ const styles = StyleSheet.create({
     color: "#999",
     fontWeight: "bold"
   }
-})
+});
 ```
 
 Whoa! That's a lot, but let's break it down:
 
-* Instead of rendering HTML elements like `div`, `span`, `h1`, etc., we're rendering components like `View` and `Button`.
+- Instead of rendering HTML elements like `div`, `span`, `h1`, etc., we're rendering components like `View` and `Button`.
   These are native components that work across different platforms.
-* Styling is specified using the `StyleSheet.create` function that React Native gives us.
+- Styling is specified using the `StyleSheet.create` function that React Native gives us.
   React's StyleSheets allow us to control our layout using Flexbox, and style using other constructs similar to those in CSS stylesheets.
 
 ## Adding a Component Test
@@ -272,15 +273,17 @@ Now let's create a `__tests__` folder in the `components` directory and add a te
 
 ```ts
 // components/__tests__/Hello.tsx
-import React from 'react'
-import renderer from 'react-test-renderer'
+import React from "react";
+import renderer from "react-test-renderer";
 
-import { Hello } from "../Hello"
+import { Hello } from "../Hello";
 
 it("renders correctly with defaults", () => {
-  const button = renderer.create(<Hello name="World" enthusiasmLevel={1} />).toJSON()
-  expect(button).toMatchSnapshot()
-})
+  const button = renderer
+    .create(<Hello name="World" enthusiasmLevel={1} />)
+    .toJSON();
+  expect(button).toMatchSnapshot();
+});
 ```
 
 The first time the test is run, it will create a snapshot of the rendered component and store it in the `components/__tests__/__snapshots__/Hello.tsx.snap` file.
@@ -296,5 +299,5 @@ Additionally, you may want to look at the [ReactXP](https://microsoft.github.io/
 
 ## Helpful Resources
 
-* [Create React Native TypeScript](https://github.com/mathieudutour/create-react-native-app-typescript) is a port of [Create React Native App](https://github.com/react-community/create-react-native-app) that uses TypeScript.
-* [React Native Template TypeScript](https://github.com/emin93/react-native-template-typescript) is a clean and minimalist template for a quick start with TypeScript.
+- [Create React Native TypeScript](https://github.com/mathieudutour/create-react-native-app-typescript) is a port of [Create React Native App](https://github.com/react-community/create-react-native-app) that uses TypeScript.
+- [React Native Template TypeScript](https://github.com/emin93/react-native-template-typescript) is a clean and minimalist template for a quick start with TypeScript.
