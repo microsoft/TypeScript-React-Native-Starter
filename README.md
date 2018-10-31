@@ -70,21 +70,6 @@ module.exports = {
 Rename the generated `App.js` and `__tests__/App.js` files to `App.tsx`. `index.js` needs to use the `.js` extension.
 All new files should use the `.tsx` extension (or `.ts` if the file doesn't contain any JSX).
 
-If you try to run the app now, you'll get an error like `object prototype may only be an object or null`.
-This is caused by a failure to import the default export from React as well as a named export on the same line.
-Open `App.tsx` and modify the import at the top of the file:
-
-```diff
--import React, { Component } from 'react';
-+import React from 'react'
-+import { Component } from 'react';
-```
-
-Some of this has to do with differences in how Babel and TypeScript interoperate with CommonJS modules.
-In the future, the two will stabilize on the same behavior.
-
-At this point, you should be able to run the React Native app.
-
 ## Adding TypeScript Testing Infrastructure
 
 Since we're using [Jest](https://github.com/facebook/jest), we'll want to add [ts-jest](https://www.npmjs.com/package/ts-jest) to our devDependencies.
@@ -93,27 +78,26 @@ Since we're using [Jest](https://github.com/facebook/jest), we'll want to add [t
 yarn add --dev ts-jest
 ```
 
-Then, we'll open up our `package.json` and replace the `jest` field with the following:
+Then, we'll create a new file called `jest.config.js`. Add the following:
 
-```json
-"jest": {
-  "preset": "react-native",
-  "moduleFileExtensions": [
-    "ts",
-    "tsx",
-    "js"
-  ],
-  "transform": {
-    "^.+\\.(js)$": "<rootDir>/node_modules/babel-jest",
-    "\\.(ts|tsx)$": "<rootDir>/node_modules/ts-jest/preprocessor.js"
+```js
+const { defaults: tsjPreset } = require('ts-jest/presets');
+
+module.exports = {
+  ...tsjPreset,
+  preset: 'react-native',
+  transform: {
+    ...tsjPreset.transform,
+    '\\.js$': '<rootDir>/node_modules/react-native/jest/preprocessor.js',
   },
-  "testRegex": "(/__tests__/.*|\\.(test|spec))\\.(ts|tsx|js)$",
-  "testPathIgnorePatterns": [
-    "\\.snap$",
-    "<rootDir>/node_modules/"
-  ],
-  "cacheDirectory": ".jest/cache"
-}
+  globals: {
+    'ts-jest': {
+      babelConfig: true,
+    }
+  },
+
+  cacheDirectory: '.jest/cache',
+};
 ```
 
 This will configure Jest to run `.ts` and `.tsx` files with `ts-jest`.
