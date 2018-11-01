@@ -10,6 +10,7 @@ import {
   Text,
   View
 } from 'react-native';
+import { Hello } from "../components/Hello";
 
 const instructions = Platform.select({
   ios: 'Press Cmd+R to reload,\n' +
@@ -33,6 +34,7 @@ export default class App extends Component<Props> {
         <Text style={styles.instructions}>
           {instructions}
         </Text>
+        <Hello name="" enthusiasmLevel={3} />
       </View>
     );
   }
