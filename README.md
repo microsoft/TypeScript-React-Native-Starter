@@ -1,5 +1,7 @@
 # TypeScript React Native Starter
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/Li-Victor/TypeScript-React-Native-Starter.svg)](https://greenkeeper.io/)
+
 Up to date Typescript React Native Starter project. Based on [React Native blog post](https://facebook.github.io/react-native/blog/2018/05/07/using-typescript-with-react-native) and [repository](https://github.com/Microsoft/TypeScript-React-Native-Starter).
 
 Android | iOS
