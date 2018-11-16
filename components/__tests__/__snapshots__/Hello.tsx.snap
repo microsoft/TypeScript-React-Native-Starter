@@ -1,0 +1,142 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly with defaults 1`] = `
+<View
+  style={
+    Object {
+      "alignItems": "center",
+      "alignSelf": "center",
+    }
+  }
+>
+  <Text
+    style={
+      Object {
+        "color": "#999",
+        "fontWeight": "bold",
+      }
+    }
+  >
+    Hello 
+    World!
+  </Text>
+  <View
+    style={
+      Object {
+        "alignItems": "stretch",
+        "alignSelf": "center",
+        "borderWidth": 5,
+        "flexDirection": "row",
+        "minHeight": 70,
+      }
+    }
+  >
+    <View
+      style={
+        Object {
+          "flex": 1,
+          "paddingVertical": 0,
+        }
+      }
+    >
+      <View
+        accessibilityLabel="decrement"
+        accessibilityRole="button"
+        accessibilityStates={Array []}
+        accessible={true}
+        isTVSelectable={true}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          Object {
+            "opacity": 1,
+          }
+        }
+      >
+        <View
+          style={
+            Array [
+              Object {},
+            ]
+          }
+        >
+          <Text
+            style={
+              Array [
+                Object {
+                  "color": "#007AFF",
+                  "fontSize": 18,
+                  "padding": 8,
+                  "textAlign": "center",
+                },
+                Object {
+                  "color": "red",
+                },
+              ]
+            }
+          >
+            -
+          </Text>
+        </View>
+      </View>
+    </View>
+    <View
+      style={
+        Object {
+          "flex": 1,
+          "paddingVertical": 0,
+        }
+      }
+    >
+      <View
+        accessibilityLabel="increment"
+        accessibilityRole="button"
+        accessibilityStates={Array []}
+        accessible={true}
+        isTVSelectable={true}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          Object {
+            "opacity": 1,
+          }
+        }
+      >
+        <View
+          style={
+            Array [
+              Object {},
+            ]
+          }
+        >
+          <Text
+            style={
+              Array [
+                Object {
+                  "color": "#007AFF",
+                  "fontSize": 18,
+                  "padding": 8,
+                  "textAlign": "center",
+                },
+                Object {
+                  "color": "blue",
+                },
+              ]
+            }
+          >
+            +
+          </Text>
+        </View>
+      </View>
+    </View>
+  </View>
+</View>
+`;
