@@ -23,8 +23,9 @@ export class Hello extends React.Component<Props, State> {
     }
   }
 
-  onIncrement = () => this.setState({ enthusiasmLevel: this.state.enthusiasmLevel + 1 });
-  onDecrement = () => this.setState({ enthusiasmLevel: this.state.enthusiasmLevel - 1 });
+  onIncrement = () => this.setState(prevState => ({ enthusiasmLevel: prevState.enthusiasmLevel + 1 }));
+  onDecrement = () => this.setState(prevState => ({ enthusiasmLevel: prevState.enthusiasmLevel - 1 }));
+  
   getExclamationMarks = (numChars: number) => Array(numChars + 1).join("!")
 
   render() {
