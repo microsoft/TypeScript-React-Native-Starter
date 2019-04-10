@@ -75,9 +75,9 @@ This is caused by a failure to import the default export from React as well as a
 Open `App.tsx` and modify the import at the top of the file:
 
 ```diff
--import React, { Component } from 'react';
+-import React, { Component } from 'react'
 +import React from 'react'
-+import { Component } from 'react';
++import { Component } from 'react'
 ```
 
 Some of this has to do with differences in how Babel and TypeScript interoperate with CommonJS modules.
