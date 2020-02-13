@@ -33,11 +33,19 @@ The following commands will:
 Okay let's go ahead and run these.
 
 ```sh
+# With Yarn
 yarn add --dev typescript
 yarn add --dev react-native-typescript-transformer
 yarn tsc --init --pretty --jsx react-native
 touch rn-cli.config.js
 yarn add --dev @types/react @types/react-native
+
+# With NPM
+npm install --save-dev typescript
+npm install --save-dev react-native-typescript-transformer
+./node_modules/typescript/bin/tsc --init --pretty --jsx react
+touch rn-cli.config.js
+npm install --save-dev @types/react @types/react-native
 ```
 
 The `tsconfig.json` file contains all the settings for the TypeScript compile.
